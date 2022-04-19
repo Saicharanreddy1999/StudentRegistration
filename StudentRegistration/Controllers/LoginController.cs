@@ -12,6 +12,7 @@ namespace StudentRegistration.Controllers
     public class LoginController : Controller
     {
         // GET: Login
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
@@ -19,31 +20,28 @@ namespace StudentRegistration.Controllers
         [HttpPost]
         public ActionResult Index(Details db)
         {
-            
 
+            //db = new Details();
 
-                db = new Details();
-                string conn = ConfigurationManager.ConnectionStrings["MyConnection"].ConnectionString;
-                SqlConnection sqlConn = new SqlConnection(conn);
-            sqlConn.Open();
-            string sql = "insert into [dbo].[Student](Id,FirstName,LastName,Email,Gender,UniversityName,CollegeName,Course) values('18J41A0548','SAi','chat','xyz','m','abc','ded','dua')";
-                SqlCommand cmd = new SqlCommand(sql, sqlConn);
            
-               // sqlConn.Open();
-            try
-            {
+            string conn = ConfigurationManager.ConnectionStrings["MyConnection"].ConnectionString;
+            SqlConnection sqlConn = new SqlConnection(conn);
+            sqlConn.Open();
+            
+          
+            string sql = $"insert into [dbo].[Student](Id,FirstName,LastName,Email,Gender,UniversityName,CollegeName,Course) values('{db.Id}','{db.FirstName}','{db.LastName}','{db.Email}','{db.Gender}','{db.UniversityName}','{db.CollegeName}','{db.Course}')";
+          
+            SqlCommand cmd = new SqlCommand(sql, sqlConn);   
                 cmd.ExecuteNonQuery();
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine("SQL Error");
-            }
+                cmd.Dispose();
+                return Content("Succesfully Added");
+           
                 sqlConn.Close();
            
             
 
 
-            return Content("Succesfully Added");
+          
    
         }
     }
